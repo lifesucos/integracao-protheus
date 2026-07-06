@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: API de Integração - Life Sucos
+  description: |
+    Documentação técnica para a integração de Pedidos de Venda com o ERP Protheus.
+    
+    **Atenção:** Esta API exige autenticação `Basic Auth`.
+  version: 1.0.0
+servers:
+  - url: https://lifeindustria165150.protheus.cloudtotvs.com.br/rest
+    description: Ambiente de Homologação
+  - url: https://lifeindustria165149.protheus.cloudtotvs.com.br/rest
+    description: Ambiente de Produção
+paths:
+  /seu_endpoint_aqui: # Substitua pelo caminho exato da sua rota REST no Protheus
+    post:
+      summary: Inclusão de Pedido de Venda
+      description: Envia um novo pedido de venda para o sistema.
+      security:
+        - basicAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PedidoVenda'
+      responses:
+        '201':
+          description: Pedido processado com sucesso.
+        '401':
+          description: Não autorizado. Verifique as credenciais no cabeçalho Authorization.
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    PedidoVenda:
+      type: object
+      properties:
+        INCLUI_PEDIDOVENDA:
+          type: array
+          items:
+            type: object
+            properties:
+              FILIAL_VENDA:
+                type: string
+                example: "0101"
+              CNPJ_CLIENTE:
+                type: string
+                example: "27699374000101"
+              DATA_EMISSAO:
+                type: string
+                example: "03/03/2026"
+              MENSAGEM_NOTA:
+                type: string
+                example: "TESTE DE MENSAGEM"
+              PESO_LIQ:
+                type: number
+                example: 1.00
+              VENDEDOR:
+                type: string
+                example: "000004"
+              ITENS:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    COD_PRODUTO:
+                      type: string
+                      example: "918"
+                    QUANTIDADE:
+                      type: integer
+                      example: 1
+                    PRECO_UNITARIO:
+                      type: number
+                      example: 6.20
+                    TIPO_OPERACAO:
+                      type: string
+                      example: "01"
